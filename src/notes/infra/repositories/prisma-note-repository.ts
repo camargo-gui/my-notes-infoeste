@@ -26,4 +26,8 @@ export class PrismaNoteRepository extends NoteRepository {
   async findByAuthorId(authorId: string): Promise<Note[]> {
     return this.prisma.note.findMany({ where: { authorId } });
   }
+
+  async findById(id: string): Promise<Note> {
+    return this.prisma.note.findUnique({ where: { id } });
+  }
 }

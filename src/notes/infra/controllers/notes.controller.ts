@@ -1,6 +1,9 @@
-import { CreateNoteDto } from '#/src/notes/domain/dto/create-note.dto';
+import { CustomRequest } from '#/src/auth/domain/dto/custom-request.dto';
+import { JwtAuthGuard } from '#/src/auth/infra/guards/jwt/jwt-auth.guard';
+import { CreateNoteRequestDto } from '#/src/notes/domain/dto/create-note-request.dto';
 import { UpdateNoteDto } from '#/src/notes/domain/dto/update-note.dto';
 import { NoteService } from '#/src/notes/domain/services/note.service';
+import { OwnerGuard } from '#/src/notes/infra/guards/owner.guard';
 import {
   Body,
   Controller,
@@ -9,27 +12,37 @@ import {
   Param,
   Post,
   Put,
+  Request,
+  UseGuards,
 } from '@nestjs/common';
 
+@UseGuards(JwtAuthGuard)
 @Controller('notes')
 export class NotesController {
   constructor(private readonly noteService: NoteService) {}
 
   @Post()
-  async create(@Body() createNoteDto: CreateNoteDto) {
-    return this.noteService.create(createNoteDto);
+  async create(
+    @Request() req: CustomRequest,
+    @Body() createNoteDto: CreateNoteRequestDto,
+  ) {
+    const authorId = req.user.id;
+    return this.noteService.create({ ...createNoteDto, authorId });
   }
 
+  @UseGuards(OwnerGuard)
   @Delete(':id')
   async delete(@Param('id') id: string) {
     return this.noteService.delete(id);
   }
 
-  @Get(':authorId')
-  async findByAuthorId(@Param('authorId') authorId: string) {
+  @Get()
+  async findByAuthorId(@Request() req: CustomRequest) {
+    const authorId = req.user.id;
     return this.noteService.findByAuthorId(authorId);
   }
 
+  @UseGuards(OwnerGuard)
   @Put(':id')
   async update(@Param('id') id: string, @Body() updateNoteDto: UpdateNoteDto) {
     return this.noteService.update(id, updateNoteDto);

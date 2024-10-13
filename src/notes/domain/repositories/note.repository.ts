@@ -7,4 +7,5 @@ export abstract class NoteRepository {
   abstract update(id: string, note: UpdateNoteDto): Promise<Note>;
   abstract delete(id: string): Promise<void>;
   abstract findByAuthorId(id: string): Promise<Note[]>;
+  abstract findById(id: string): Promise<Note>;
 }

@@ -6,5 +6,6 @@ export abstract class NoteService {
   abstract create(noteDto: CreateNoteDto): Promise<void>;
   abstract delete(id: string): Promise<void>;
   abstract findByAuthorId(authorId: string): Promise<Note[]>;
+  abstract findOne(id: string): Promise<Note>;
   abstract update(id: string, noteDto: UpdateNoteDto): Promise<void>;
 }

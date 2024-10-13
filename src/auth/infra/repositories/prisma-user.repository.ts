@@ -9,7 +9,7 @@ export class PrismaUserRepository extends UserRepository {
     super();
   }
 
-  async findByEmail(email: string): Promise<User> {
+  async findByEmail(email: string): Promise<User | null> {
     return this.prisma.user.findUnique({ where: { email } });
   }
 
