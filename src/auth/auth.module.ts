@@ -1,10 +1,10 @@
 import { UserRepository } from '#/src/auth/domain/repositories/user.repository';
 import { LoginService } from '#/src/auth/domain/services/login.service';
-import { RegisterService } from '#/src/auth/domain/services/register.service';
+import { UserService } from '#/src/auth/domain/services/user.service';
 import { AuthController } from '#/src/auth/infra/controllers/auth.controller';
 import { JwtStrategy } from '#/src/auth/infra/guards/jwt/jwt-strategy';
 import { PrismaUserRepository } from '#/src/auth/infra/repositories/prisma-user.repository';
-import { ConcreteRegisterService } from '#/src/auth/infra/services/concrete-register.service';
+import { ConcreteUserService } from '#/src/auth/infra/services/concrete-user.service';
 import { JwtLoginService } from '#/src/auth/infra/services/jwt-login.service';
 import { EncryptionService } from '#/src/common/encryption/domain/encryption.service';
 import { BCryptEncryptionService } from '#/src/common/encryption/infra/bcrypt-encryption.service';
@@ -35,8 +35,8 @@ import { PassportModule } from '@nestjs/passport';
       useClass: BCryptEncryptionService,
     },
     {
-      provide: RegisterService,
-      useClass: ConcreteRegisterService,
+      provide: UserService,
+      useClass: ConcreteUserService,
     },
     JwtStrategy,
   ],

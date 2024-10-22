@@ -10,12 +10,15 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
-  Put,
   Request,
   UseGuards,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('notes')
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('notes')
 export class NotesController {
@@ -43,7 +46,7 @@ export class NotesController {
   }
 
   @UseGuards(OwnerGuard)
-  @Put(':id')
+  @Patch(':id')
   async update(@Param('id') id: string, @Body() updateNoteDto: UpdateNoteDto) {
     return this.noteService.update(id, updateNoteDto);
   }
