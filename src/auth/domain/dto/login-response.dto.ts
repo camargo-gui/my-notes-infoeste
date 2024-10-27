@@ -5,4 +5,8 @@ export class LoginResponseDto {
   @Expose()
   @IsString()
   access_token: string;
+
+  @Expose()
+  @IsString()
+  user_name: string;
 }

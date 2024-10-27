@@ -30,6 +30,6 @@ export class JwtLoginService extends LoginService {
 
     const payload = { sub: user.id, email: user.email };
     const access_token = this.jwtService.sign(payload);
-    return { access_token };
+    return { access_token, user_name: user.name };
   }
 }
